@@ -47,6 +47,10 @@ function resolveScriptPath(filepath) {
 	return path.resolve(dir, filepath);
 }
 
+function resolveModulePath(root, filepath) {
+	return path.resolve(root, filepath);
+}
+
 export default async function(entryFile, outputFile, buildOptions = {}) {
 	let originalEntry = entryFile;
 
@@ -57,6 +61,7 @@ export default async function(entryFile, outputFile, buildOptions = {}) {
 
 	let buildOpts = Object.assign({
 		name: `${originalEntry} (Eleventy Stork)`,
+		moduleRoot: path.resolve("."),
 		minimalBundle: false,
 		importMap: {},
 		external: [
@@ -73,7 +78,7 @@ export default async function(entryFile, outputFile, buildOptions = {}) {
 
 	buildOpts.banner ??= `/*! ${buildOpts.name} */`;
 
-	let { fileSystemMode, adapterSuffixes, minimalBundle, fsPath, external, importMap } = buildOpts;
+	let { moduleRoot, fileSystemMode, adapterSuffixes, minimalBundle, fsPath, external, importMap } = buildOpts;
 
 	if(fileSystemMode === "consume") {
 		fsPath = resolveScriptPath("./shims/shim-consume-fs.js");
@@ -109,11 +114,11 @@ export default async function(entryFile, outputFile, buildOptions = {}) {
 		},
 		"node:events": {
 			pattern: /^(node\:)?events$/,
-			path: resolveScriptPath("./node_modules/events/events.js"),
+			path: resolveModulePath(moduleRoot, "./node_modules/events/events.js"),
 		},
 		"node:path": {
 			pattern: /^(node\:)?path$/,
-			path: resolveScriptPath("./node_modules/path/path.js"),
+			path: resolveModulePath(moduleRoot, "./node_modules/path/path.js"),
 		},
 		"node:os": {
 			pattern: /^(node\:)?os$/,
@@ -122,11 +127,11 @@ export default async function(entryFile, outputFile, buildOptions = {}) {
 		// These are used by memfs (not Eleventy or Core)
 		"node:assert": {
 			pattern: /^(node\:)?assert$/,
-			path: resolveScriptPath("./node_modules/assert/build/assert.js"),
+			path: resolveModulePath(moduleRoot, "./node_modules/assert/build/assert.js"),
 		},
 		"node:stream": {
 			pattern: /^(node\:)?stream$/,
-			path: resolveScriptPath("./node_modules/readable-stream/lib/stream.js"),
+			path: resolveModulePath(moduleRoot, "./node_modules/readable-stream/lib/stream.js"),
 		},
 	});
 
