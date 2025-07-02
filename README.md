@@ -4,6 +4,10 @@ Internal package to build Eleventy core and plugin bundles (using esbuild, with 
 
 ## Usage
 
+```
+npm install @11ty/package-bundler
+```
+
 ```js
 import bundle from "@11ty/package-bundler";
 
