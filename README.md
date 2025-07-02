@@ -1,6 +1,6 @@
 # @11ty/package-bundler
 
-Internal package to build packages (using esbuild) for Eleventy core and plugin bundles (with adapters) for use in various environments (client).
+Internal package to build Eleventy core and plugin bundles (using esbuild, with support for adapters) for use in various environments (client).
 
 ## Usage
 
