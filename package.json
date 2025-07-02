@@ -1,6 +1,7 @@
 {
 	"name": "@11ty/package-bundler",
   "version": "0.1.0",
+  "description": "Internal package to build bundles (using esbuild) for use in various environments",
   "type": "module",
   "main": "./package-bundler.js",
 	"publishConfig": {
