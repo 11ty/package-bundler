@@ -51,7 +51,7 @@ function resolveModulePath(root, filepath) {
 	return path.resolve(root, filepath);
 }
 
-export default async function(entryFile, outputFile, buildOptions = {}) {
+export default async function bundleClient(entryFile, outputFile, buildOptions = {}) {
 	let originalEntry = entryFile;
 
 	if(entryFile.startsWith("file://")) {
@@ -60,7 +60,7 @@ export default async function(entryFile, outputFile, buildOptions = {}) {
 	}
 
 	let buildOpts = Object.assign({
-		name: `${originalEntry} (Eleventy Stork)`,
+		name: `${originalEntry} (Eleventy Package Bundler)`,
 		moduleRoot: path.resolve("."),
 		minimalBundle: false,
 		importMap: {},
@@ -136,6 +136,10 @@ export default async function(entryFile, outputFile, buildOptions = {}) {
 			pattern: /^(node\:)?stream$/,
 			path: resolveScriptPath("./shims/stream.js"),
 		},
+		"node:assert": {
+			pattern: /^(node\:)?assert$/,
+			path: resolveScriptPath("./shims/noop.js"),
+		}
 	});
 
 	let options = Object.assign({
