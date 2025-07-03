@@ -21,6 +21,7 @@ await bundle(INPUT, OUTPUT, {
     "node:fs",
     "node:crypto",
   ],
+  moduleRoot: ".", // root directory to resolve node_modules paths
   esbuild: {}, // options passed to esbuild
 });
 ```

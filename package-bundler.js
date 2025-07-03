@@ -131,7 +131,7 @@ export default async function(entryFile, outputFile, buildOptions = {}) {
 		},
 		"node:stream": {
 			pattern: /^(node\:)?stream$/,
-			path: resolveModulePath(moduleRoot, "./node_modules/readable-stream/lib/stream.js"),
+			path: resolveScriptPath("./shims/stream.js"),
 		},
 	});
 
