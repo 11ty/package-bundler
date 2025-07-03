@@ -115,10 +115,12 @@ export default async function(entryFile, outputFile, buildOptions = {}) {
 		"node:events": {
 			pattern: /^(node\:)?events$/,
 			path: resolveModulePath(moduleRoot, "./node_modules/events/events.js"),
+			// path: resolveScriptPath("./node_modules/events/events.js"),
 		},
 		"node:path": {
 			pattern: /^(node\:)?path$/,
 			path: resolveModulePath(moduleRoot, "./node_modules/path/path.js"),
+			// path: resolveScriptPath("./node_modules/path/path.js"),
 		},
 		"node:os": {
 			pattern: /^(node\:)?os$/,
@@ -128,6 +130,7 @@ export default async function(entryFile, outputFile, buildOptions = {}) {
 		"node:assert": {
 			pattern: /^(node\:)?assert$/,
 			path: resolveModulePath(moduleRoot, "./node_modules/assert/build/assert.js"),
+			// path: resolveScriptPath("./node_modules/assert/build/assert.js"),
 		},
 		"node:stream": {
 			pattern: /^(node\:)?stream$/,
