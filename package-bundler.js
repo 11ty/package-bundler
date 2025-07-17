@@ -62,7 +62,6 @@ export default async function bundleClient(entryFile, outputFile, buildOptions =
 	let buildOpts = Object.assign({
 		name: `${originalEntry} (Eleventy Package Bundler)`,
 		moduleRoot: path.resolve("."),
-		minimalBundle: false,
 		importMap: {},
 		external: [
 			"chokidar", // always
@@ -78,7 +77,7 @@ export default async function bundleClient(entryFile, outputFile, buildOptions =
 
 	buildOpts.banner ??= `/*! ${buildOpts.name} */`;
 
-	let { moduleRoot, fileSystemMode, adapterSuffixes, minimalBundle, fsPath, external, importMap } = buildOpts;
+	let { moduleRoot, fileSystemMode, adapterSuffixes, fsPath, external, importMap } = buildOpts;
 
 	if(fileSystemMode === "consume") {
 		fsPath = resolveScriptPath("./shims/shim-consume-fs.js");
@@ -88,26 +87,16 @@ export default async function bundleClient(entryFile, outputFile, buildOptions =
 		fsPath = path.resolve(fsPath); // relative to working project dir
 	}
 
-	if(minimalBundle) {
-		adapterSuffixes = [".coremin.js", ".core.js"];
-
-		// Don’t need to preserve names
-		esbuild.keepNames = false;
-
-		// Remove `debug`
-		Object.assign(importMap, {
-			"debug": {
-				pattern: /^debug$/,
-				path: resolveScriptPath("./shims/debug.js"),
-			},
-		});
-	}
-
 	if(!fsPath) {
 		throw new Error("Missing `fsPath` option.");
 	}
 
 	Object.assign(importMap, {
+		// debug becomes noop
+		"debug": {
+			pattern: /^debug$/,
+			path: resolveScriptPath("./shims/debug.js"),
+		},
 		"node:fs": {
 			pattern: /^(node\:)?fs$/,
 			path: fsPath,

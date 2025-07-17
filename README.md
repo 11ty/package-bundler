@@ -13,10 +13,8 @@ import bundle from "@11ty/package-bundler";
 
 await bundle(INPUT, OUTPUT, {
   name: "Eleventy Fetch",
-  minimalBundle: false,
   fileSystemMode: "consume",
   external: [
-    "chokidar",
     "fs",
     "node:fs",
     "node:crypto",
