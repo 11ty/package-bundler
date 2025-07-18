@@ -19,7 +19,6 @@ function getAdapterReplacementPlugin(importMap = {}, adapterSuffixes = []) {
 			// File remapping convention (used by Core)
 			// .js, .mjs, .cjs
 			build.onResolve({ filter: /.[cm]?js$/i }, args => {
-				// ignore node_modules
 				for(let suffix of adapterSuffixes) {
 					let newPath = ""+args.path;
 					if(!args.path.endsWith(suffix)) {
