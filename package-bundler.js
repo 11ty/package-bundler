@@ -4,7 +4,7 @@ import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 
 // Adapter substitution happens for files in an `adapters` folder, ending with any of adapterSuffixes (first found wins)
-function getAdapterReplacementPlugin(importMap = {}, adapterSuffixes = [".core.js"]) {
+function getAdapterReplacementPlugin(importMap = {}, adapterSuffixes = []) {
 	return {
 		name: 'eleventyAdapterSubstitution',
 		setup(build) {
@@ -17,7 +17,9 @@ function getAdapterReplacementPlugin(importMap = {}, adapterSuffixes = [".core.j
 			}
 
 			// File remapping convention (used by Core)
-			build.onResolve({ filter: /\/Adapters\//i }, args => {
+			// .js, .mjs, .cjs
+			build.onResolve({ filter: /.[cm]?js$/i }, args => {
+				// ignore node_modules
 				for(let suffix of adapterSuffixes) {
 					let newPath = ""+args.path;
 					if(!args.path.endsWith(suffix)) {
