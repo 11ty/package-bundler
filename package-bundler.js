@@ -18,7 +18,7 @@ function getAdapterReplacementPlugin(importMap = {}, adapterSuffixes = []) {
 
 			// File remapping convention
 			build.onResolve({ filter: /.*/ }, args => {
-				if(!args.path.startsWith(path.sep) && !args.path.startsWith("." + path.sep) && !args.path.startsWith(".." + path.sep)) {
+				if(!args.path.startsWith("/") && !args.path.startsWith("./") && !args.path.startsWith("../")) {
 					return;
 				}
 				if(args.resolveDir.includes(path.sep + "node_modules" + path.sep)) {
