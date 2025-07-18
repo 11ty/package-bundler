@@ -16,9 +16,15 @@ function getAdapterReplacementPlugin(importMap = {}, adapterSuffixes = []) {
 				});
 			}
 
-			// File remapping convention (used by Core)
-			// .js, .mjs, .cjs
-			build.onResolve({ filter: /.[cm]?js$/i }, args => {
+			// File remapping convention
+			build.onResolve({ filter: /.*/ }, args => {
+				if(!args.path.startsWith("/") && !args.path.startsWith("./") && !args.path.startsWith("../")) {
+					return;
+				}
+				if(args.resolveDir.includes("/node_modules/")) {
+					return;
+				}
+
 				for(let suffix of adapterSuffixes) {
 					let newPath = ""+args.path;
 					if(!args.path.endsWith(suffix)) {
@@ -31,11 +37,6 @@ function getAdapterReplacementPlugin(importMap = {}, adapterSuffixes = []) {
 							path: possiblePath,
 						};
 					}
-				}
-
-				// No adapter file found, return original
-				return {
-					path: path.resolve(args.resolveDir, args.path),
 				}
 			});
 		},
