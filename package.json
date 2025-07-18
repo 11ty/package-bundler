@@ -22,6 +22,20 @@
 	},
 	"bugs": "https://github.com/11ty/package-bundler/issues",
 	"homepage": "https://www.11ty.dev/",
+	"scripts": {
+		"test": "ava"
+	},
+	"ava": {
+		"files": [
+			"test/*.js",
+			"!**/stubs/**/*.js"
+		],
+		"watchMode": {
+			"ignoreChanges": [
+				"./test/stubs/**/*"
+			]
+		}
+	},
 	"dependencies": {
 		"assert": "^2.1.0",
 		"buffer": "^6.0.3",
@@ -30,5 +44,8 @@
 		"memfs": "^4.17.2",
 		"path": "^0.12.7",
 		"process": "^0.11.10"
+	},
+	"devDependencies": {
+		"ava": "^6.4.1"
 	}
 }
