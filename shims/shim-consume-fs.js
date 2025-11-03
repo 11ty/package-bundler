@@ -4,7 +4,7 @@
 // needs to match ./shims/shim-fs.js
 const GLOBAL_FS_NAME = "eleventyFileSystem";
 
-let fs = window[GLOBAL_FS_NAME] || globalThis[GLOBAL_FS_NAME];
+let fs = typeof window !== "undefined" && window[GLOBAL_FS_NAME] || typeof globalThis !== "undefined" && globalThis[GLOBAL_FS_NAME];
 
 if(!fs) {
 	// In minimal core bundle, fs access throws an error

@@ -121,16 +121,24 @@ export default async function bundleClient(entryFile, outputFile, buildOptions =
 		"node:assert": {
 			pattern: /^(node\:)?assert$/,
 			path: resolveModulePath(moduleRoot, "./node_modules/assert/build/assert.js"),
-			// path: resolveScriptPath("./node_modules/assert/build/assert.js"),
 		},
 		"node:stream": {
 			pattern: /^(node\:)?stream$/,
 			path: resolveScriptPath("./shims/stream.js"),
 		},
-		"node:assert": {
-			pattern: /^(node\:)?assert$/,
-			path: resolveScriptPath("./shims/noop.js"),
-		}
+		"node:buffer": {
+			pattern: /^(node\:)?buffer$/,
+			path: resolveModulePath(moduleRoot, "./node_modules/buffer/index.js"),
+		},
+		// Used by tinyglobby
+		"node:url": {
+			pattern: /^(node\:)?url$/,
+			path: resolveScriptPath("./shims/shim-url.js"),
+		},
+		"node:module": {
+			pattern: /^(node\:)?module$/,
+			path: resolveScriptPath("./shims/shim-module.js"),
+		},
 	});
 
 	let options = Object.assign({

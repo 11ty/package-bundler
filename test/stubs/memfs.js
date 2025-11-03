@@ -1,0 +1,1 @@
+export { memfs } from "memfs";

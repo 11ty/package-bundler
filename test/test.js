@@ -54,11 +54,23 @@ test("Two adapters (reversed order)", async t => {
   t.is(typeof adaptedModule, "function");
 });
 
+test("Tiny globby uses node:url now", async t => {
+  await bundlePackage("./test/stubs/tinyglobby.js", "./test/stubs/output-tinyglobby.js");
+
+  let mod = await import("./stubs/output-tinyglobby.js");
+  t.is(typeof mod.glob, "function");
+  t.is(typeof mod.globSync, "function");
+});
+
+test("memfs uses Buffer", async t => {
+  await bundlePackage("./test/stubs/memfs.js", "./test/stubs/output-memfs.js");
+
+  let { memfs } = await import("./stubs/output-memfs.js");
+  t.is(typeof memfs, "function");
+});
+
 test.after.always(() => {
-  fs.unlinkSync("./test/stubs/output0.js");
-  fs.unlinkSync("./test/stubs/output1.js");
-  fs.unlinkSync("./test/stubs/output2.js");
-  fs.unlinkSync("./test/stubs/output2b.js");
-  fs.unlinkSync("./test/stubs/output3.js");
-  fs.unlinkSync("./test/stubs/output4.js");
+  for(let filepath of fs.globSync("./test/stubs/output*.js")) {
+    fs.unlinkSync(filepath);
+  }
 })
