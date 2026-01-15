@@ -1,6 +1,6 @@
 {
 	"name": "@11ty/package-bundler",
-	"version": "0.5.4",
+	"version": "0.5.5",
 	"description": "Internal package to build bundles (using esbuild) for use in various environments",
 	"type": "module",
 	"main": "./package-bundler.js",
@@ -39,9 +39,9 @@
 	"dependencies": {
 		"assert": "^2.1.0",
 		"buffer": "^6.0.3",
-		"esbuild": "^0.27.0",
+		"esbuild": "^0.27.2",
 		"events": "^3.3.0",
-		"memfs": "^4.51.0",
+		"memfs": "^4.51.1",
 		"path": "^0.12.7",
 		"process": "^0.11.10"
 	},
