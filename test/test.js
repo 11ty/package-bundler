@@ -2,6 +2,12 @@ import test from "ava";
 import fs from "node:fs";
 import bundlePackage from "../package-bundler.js";
 
+test.after.always(() => {
+  for(let filepath of fs.globSync("./test/stubs/output*.js")) {
+    fs.unlinkSync(filepath);
+  }
+})
+
 test("Default behavior (no adapters)", async t => {
   await bundlePackage("./test/stubs/module.js", "./test/stubs/output0.js");
 
@@ -69,8 +75,23 @@ test("memfs uses Buffer", async t => {
   t.is(typeof memfs, "function");
 });
 
-test.after.always(() => {
-  for(let filepath of fs.globSync("./test/stubs/output*.js")) {
-    fs.unlinkSync(filepath);
-  }
-})
+test("Adapter suffixes support cjs extensions", async t => {
+  await bundlePackage("./test/stubs/commonjs.cjs", "./test/stubs/output-cjs.js", {
+    adapterSuffixes: [".adapter.cjs"],
+  });
+
+  let mod =  await import("./stubs/output-cjs.js");
+  t.is(typeof mod.default.originalModule, "undefined");
+  t.is(typeof mod.default.adaptedModule, "function");
+});
+
+test("Adapter suffixes support mjs extensions", async t => {
+  await bundlePackage("./test/stubs/esm.mjs", "./test/stubs/output-esm.js", {
+    adapterSuffixes: [".adapter.mjs"],
+  });
+
+  let {originalModule, adaptedModule} =  await import("./stubs/output-esm.js");
+  t.is(typeof originalModule, "undefined");
+  t.is(typeof adaptedModule, "function");
+});
+

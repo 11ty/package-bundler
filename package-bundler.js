@@ -3,6 +3,8 @@ import path from "node:path";
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 
+let VALID_TARGET_EXTENSIONS = [".js", ".cjs", ".mjs"];
+
 // Adapter substitution happens for files in an `adapters` folder, ending with any of adapterSuffixes (first found wins)
 function getAdapterReplacementPlugin(importMap = {}, adapterSuffixes = []) {
 	return {
@@ -25,10 +27,18 @@ function getAdapterReplacementPlugin(importMap = {}, adapterSuffixes = []) {
 					return;
 				}
 
+				let extension = "." + args.path.split(".").pop();
+				if(extension === "." || !VALID_TARGET_EXTENSIONS.includes(extension)) {
+					return;
+				}
+
 				for(let suffix of adapterSuffixes) {
 					let newPath = ""+args.path;
 					if(!args.path.endsWith(suffix)) {
-						newPath = newPath.replace(".js", suffix);
+						// replace .js with e.g. .core.js
+						// replace .cjs with e.g. .core.cjs
+						// replace .mjs with e.g. .core.mjs
+						newPath = newPath.slice(0, -1 * extension.length) + suffix;
 					}
 
 					let possiblePath = path.join(args.resolveDir, newPath);
