@@ -26,6 +26,13 @@ if(!fs) {
 		fstatSync: noopError,
 		closeSync: noopError,
 		openSync: noopError,
+
+		// tinyglobby
+		readdir: noopError,
+		readdirSync: noopError,
+		realpath: noopError,
+		realpathSync: noopError,
+		stat: noopError,
 	};
 }
 
@@ -41,5 +48,11 @@ export const readSync = fs.readSync;
 export const fstatSync = fs.fstatSync;
 export const closeSync = fs.closeSync;
 export const openSync = fs.openSync;
+
+export const readdir = fs.readdir;
+export const readdirSync = fs.readdirSync;
+export const realpath = fs.realpath;
+export const realpathSync = fs.realpathSync;
+export const stat = fs.stat;
 
 export default fs;

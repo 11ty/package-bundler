@@ -63,6 +63,19 @@ function resolveModulePath(root, filepath) {
 	return path.resolve(root, filepath);
 }
 
+// attempts to find both script and module
+function resolveGeneric(root, filepath) {
+	let script = resolveScriptPath(filepath);
+	if(fs.existsSync(script)) {
+		return script;
+	}
+	let modulepath = resolveModulePath(root, filepath);
+	if(fs.existsSync(modulepath)) {
+		return modulepath;
+	}
+	throw new Error(`Target file not found for: ${filepath} (root: ${root})`);
+}
+
 export default async function bundleClient(entryFile, outputFile, buildOptions = {}) {
 	let originalEntry = entryFile;
 
@@ -107,7 +120,7 @@ export default async function bundleClient(entryFile, outputFile, buildOptions =
 		// debug becomes noop
 		"debug": {
 			pattern: /^debug$/,
-			path: resolveScriptPath("./shims/debug.js"),
+			path: resolveGeneric(moduleRoot, "./shims/debug.js"),
 		},
 		"node:fs": {
 			pattern: /^(node\:)?fs$/,
@@ -115,17 +128,15 @@ export default async function bundleClient(entryFile, outputFile, buildOptions =
 		},
 		"node:events": {
 			pattern: /^(node\:)?events$/,
-			path: resolveModulePath(moduleRoot, "./node_modules/events/events.js"),
-			// path: resolveScriptPath("./node_modules/events/events.js"),
+			path: resolveGeneric(moduleRoot, "./node_modules/events/events.js"),
 		},
 		"node:path": {
 			pattern: /^(node\:)?path$/,
-			path: resolveModulePath(moduleRoot, "./node_modules/path/path.js"),
-			// path: resolveScriptPath("./node_modules/path/path.js"),
+			path: resolveGeneric(moduleRoot, "./node_modules/path/path.js"),
 		},
 		"node:os": {
 			pattern: /^(node\:)?os$/,
-			path: resolveScriptPath("./shims/os.js"),
+			path: resolveGeneric(moduleRoot, "./shims/os.js"),
 		},
 		// These are used by memfs (not Eleventy or Core)
 		"node:assert": {
@@ -134,20 +145,20 @@ export default async function bundleClient(entryFile, outputFile, buildOptions =
 		},
 		"node:stream": {
 			pattern: /^(node\:)?stream$/,
-			path: resolveScriptPath("./shims/stream.js"),
+			path: resolveGeneric(moduleRoot, "./shims/stream.js"),
 		},
 		"node:buffer": {
 			pattern: /^(node\:)?buffer$/,
-			path: resolveModulePath(moduleRoot, "./node_modules/buffer/index.js"),
+			path: resolveGeneric(moduleRoot, "./node_modules/buffer/index.js"),
 		},
 		// Used by tinyglobby
 		"node:url": {
 			pattern: /^(node\:)?url$/,
-			path: resolveScriptPath("./shims/shim-url.js"),
+			path: resolveGeneric(moduleRoot, "./shims/shim-url.js"),
 		},
 		"node:module": {
 			pattern: /^(node\:)?module$/,
-			path: resolveScriptPath("./shims/shim-module.js"),
+			path: resolveGeneric(moduleRoot, "./shims/shim-module.js"),
 		},
 	});
 

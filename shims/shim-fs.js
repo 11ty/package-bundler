@@ -25,4 +25,11 @@ export const fstatSync = fs.fstatSync;
 export const closeSync = fs.closeSync;
 export const openSync = fs.openSync;
 
+// tinyglobby
+export const readdir = fs.readdir;
+export const readdirSync = fs.readdirSync;
+export const realpath = fs.realpath;
+export const realpathSync = fs.realpathSync;
+export const stat = fs.stat;
+
 export default fs;
