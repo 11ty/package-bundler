@@ -39,7 +39,7 @@
 	"dependencies": {
 		"assert": "^2.1.0",
 		"buffer": "^6.0.3",
-		"esbuild": "^0.28.0",
+		"esbuild": "^0.28.2",
 		"events": "^3.3.0",
 		"memfs": "^4.57.6",
 		"path": "^0.12.7",
